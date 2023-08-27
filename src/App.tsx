@@ -1,14 +1,12 @@
-import "./styles/App.scss";
+import * as React from 'react';
 
-import Hud from "./components/hud/HUD";
+import Hud from './components/hud/HUD';
 
 function App() {
   return (
-    <>
-      <Hud>
-        <div slot="main-module">Hello World</div>
-      </Hud>
-    </>
+    <Hud>
+      <div>Hello World</div>
+    </Hud>
   );
 }
 

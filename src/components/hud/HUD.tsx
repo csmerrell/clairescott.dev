@@ -1,23 +1,48 @@
-import style from "./styles/hud.scss?inline";
+//React
+import React from 'react';
+import styled from 'styled-components';
 
-import React, { ReactNode } from "react";
+//Components
+import Header from './Header';
+import LeftNav from './LeftNav';
 
-import Header from "./Header";
-import LeftNav from "./LeftNav";
+//Types
+import type { ComponentWithChildren } from 'ReactCustom';
 
-const HUD: React.FC<{ children: ReactNode }> = ({ children }) => {
+//Component definition
+const HUD: React.FC<ComponentWithChildren> = ({ children }) => {
+  //state logic
+
+  //slot logic
   const mainModuleContent = React.Children.toArray(children).find(
-    (child) => (child as JSX.Element)?.props?.slot === "main-module",
+    (child) => (child as JSX.Element)?.props?.slot === 'main-module'
   );
 
+  //styles
+  const StyledHUD = styled.div`
+    display: flex;
+    flex-flow: column;
+    overflow: hidden;
+
+    .hud-body {
+      display: flex;
+      flex-flow: row;
+
+      .main-panel {
+        overflow: auto;
+      }
+    }
+  `;
+
+  //template
   return (
-    <div className={style}>
+    <StyledHUD>
       <Header />
       <div className="hud-body">
-        <LeftNav />
+        <LeftNav className="left-nav" />
         <div className="main-panel">{mainModuleContent}</div>
       </div>
-    </div>
+    </StyledHUD>
   );
 };
 
