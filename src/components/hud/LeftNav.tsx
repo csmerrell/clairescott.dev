@@ -1,70 +1,97 @@
 //react
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef, TransitionEvent } from 'react';
 import styled from 'styled-components';
 
 //components
 
 //types
-type LeftNavProps = {
-  className: string;
-};
+import type { ComponentParams } from '@/types/ReactCustom';
+
+//styles
+const StyledLeftNav = styled.div`
+  &.left-nav {
+    position: relative;
+    border-right: 1px solid var(--clr-border);
+    box-shadow: 0 0 5px 0.5px var(--clr-border);
+    .nav-panel {
+      width: 0;
+      overflow: hidden;
+      transition: width 0.5s ease-out;
+
+      .dismisser {
+        font-size: 1.5rem;
+        color: var(--clr-secondary);
+        position: absolute;
+        right: 1rem;
+        top: 0.5rem;
+        cursor: pointer;
+        transition: color 0.2s ease-out;
+
+        &:hover {
+          color: var(--clr-font);
+        }
+      }
+    }
+
+    &.expanded {
+      .nav-panel {
+        width: 16rem;
+      }
+    }
+
+    .expander {
+      position: absolute;
+      padding: 0.5rem 0.5rem;
+      font-size: 1.5rem;
+      color: var(--clr-secondary);
+      cursor: pointer;
+      transition: color 0.2s ease-out;
+
+      &:hover {
+        color: var(--clr-font);
+      }
+    }
+  }
+`;
 
 //component definition
-const LeftNav: React.FC<LeftNavProps> = ({ className }) => {
+const LeftNav: React.FC<ComponentParams> = ({ className }) => {
   //state logic
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const [toggling, setToggling] = useState(false);
   const navPanel = useRef<HTMLDivElement | null>(null);
 
-  //lock toggling anytime the navPanel is mid-animation
-  useEffect(() => {
-    const unlockToggling = () => {
-      setToggling(false);
-      navPanel.current?.removeEventListener('transitionend', unlockToggling);
-    };
-
-    setToggling(true);
-    navPanel.current?.addEventListener('transitionend', unlockToggling);
-  }, [expanded]);
+  const unlockToggling = (event: Event) => {
+    if (event.target != navPanel.current) return;
+    setToggling(false);
+    navPanel.current?.removeEventListener('transitionend', unlockToggling);
+  };
 
   const toggle = () => {
-    if (!toggling) setExpanded(!expanded);
+    if (!toggling) {
+      setToggling(true);
+      setExpanded(!expanded);
+      navPanel.current?.addEventListener('transitionend', unlockToggling);
+    }
   };
 
   //slot logic
 
-  //styles
-  const StyledLeftNav = styled.div`
-    .left-nav {
-      .nav-panel {
-        width: 0;
-        transition: width 0.3s ease-out;
-      }
-
-      &.expanded {
-        .nav-panel {
-          width: 12rem;
-        }
-      }
-    }
-  `;
-
   //template
   return (
     <StyledLeftNav
-      className={`left-nav ${className} ${expanded ? 'expanded' : ''}`}
+      className={`
+        left-nav ${className} 
+        ${expanded ? 'expanded' : ''} 
+        ${toggling ? 'toggling' : ''}
+      `}
     >
       <div>
-        {expanded && (
-          <div ref={navPanel} className={`nav-panel`}>
-            <span className="nav-dismiss fa fa-times" onClick={() => toggle} />
-          </div>
-        )}
-        {!expanded && (
-          <span
-            className="left-nav-expander fa fa-chevron-right"
-            onClick={toggle}
-          />
+        <div ref={navPanel} className={`nav-panel`}>
+          <span className="dismisser fa fa-times" onClick={toggle} />
+        </div>
+        {!expanded && !toggling && (
+          <span className="expander fa fa-chevron-right" onClick={toggle} />
         )}
       </div>
     </StyledLeftNav>
