@@ -5,18 +5,19 @@ import styled from 'styled-components';
 //Components
 import Header from './Header';
 import LeftNav from './LeftNav';
-
-//Types
-import type { ComponentWithChildren } from 'ReactCustom';
+import { ComponentParams, SlotChildElement } from '@/types/ReactCustom';
 
 //Component definition
-const HUD: React.FC<ComponentWithChildren> = ({ children }) => {
+const Hud: React.FC<ComponentParams> = ({ children }) => {
   //state logic
 
   //slot logic
-  const mainModuleContent = React.Children.toArray(children).find(
-    (child) => (child as JSX.Element)?.props?.slot === 'main-module'
-  );
+  const mainModuleContent = React.Children.toArray(children).filter((child) => {
+    return (
+      React.isValidElement<SlotChildElement>(child) &&
+      child.props.slot === 'main-module'
+    );
+  });
 
   //styles
   const StyledHUD = styled.div`
@@ -46,4 +47,4 @@ const HUD: React.FC<ComponentWithChildren> = ({ children }) => {
   );
 };
 
-export default HUD;
+export default Hud;

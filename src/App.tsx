@@ -1,6 +1,4 @@
-import * as React from 'react';
-
-import Hud from './components/hud/HUD';
+import Hud from './components/hud/Hud';
 
 function App() {
   return (
