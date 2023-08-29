@@ -22,8 +22,12 @@ const StyledHUD = styled.div`
       display: flex;
       flex-flow: row;
 
-      .main-panel {
+      #main-panel {
+        flex-grow: 1;
         overflow: auto;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
       }
 
       > * {

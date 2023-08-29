@@ -14,7 +14,7 @@ const StyledHeader = styled.div`
     justify-content: flex-start;
     align-items: center;
 
-    background-color: var(--clr-bg);
+    background-color: var(--clr-bg-light-5);
     z-index: var(--header);
     padding: 0.25rem 1rem;
     border-bottom: 1px solid var(--clr-border);
