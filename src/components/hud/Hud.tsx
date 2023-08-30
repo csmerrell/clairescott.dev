@@ -5,7 +5,7 @@ import styled from 'styled-components';
 //Components
 import Header from './Header';
 import LeftNav from './LeftNav';
-import { ComponentParams, SlotChildElement } from '@/types/ReactCustom';
+import { ComponentParams, SlotChildElement } from '@/model/ReactCustom';
 
 //styles
 const StyledHUD = styled.div`

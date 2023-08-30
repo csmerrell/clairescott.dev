@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import AnimatedProgressBar from '@/components/dataVisualization/AnimatedProgressBar';
 
 //types
-import type { ComponentParams } from '@/types/ReactCustom';
+import type { ComponentParams } from '@/model/ReactCustom';
 import TrelloPortal from '@/pages/dashboard/components/TrelloPortal';
 import Card from '@/components/layout/Card';
 
