@@ -48,5 +48,46 @@
 			"export default COMPONENT_PLACEHOLDER;"
 		],
 		"description": "Template scaffold for a react component."
+	},
+	"Slotted React Template": {
+		"scope": "tsx,typescriptreact",
+		"prefix": "reslot",
+		"body": [
+			"//react",
+			"import React from 'react';",
+			"import styled from 'styled-components';",
+			"",
+			"//components",
+			"",
+			"//types",
+			"import type { ComponentParams, SlotChildElement } from '@/types/ReactCustom';",
+			"",
+			"//styles",
+			"const STYLED_COMPONENT = styled.div``;",
+			"",
+			"//component definition",
+			"const COMPONENT_PLACEHOLDER: React.FC<ComponentParams> = ({ className }) => {",
+			" //state logic",
+			"",
+			" //slot logic",
+			" const SLOTCONTENT = React.Children.toArray(children).filter((child) => {",
+			" return (",
+			"  React.isValidElement<SlotChildElement>(child) &&",
+			"  child.props.slot === 'slot-name'",
+			" );",
+			"});",
+			"",
+			" //template",
+			" return (",
+			"  <STYLED_COMPONENT className={className ? ' ' + className : ''}>",
+			"   {SLOTCONTENT}",
+			"  </STYLED_COMPONENT>",
+			" )",
+			"}", 
+			"",
+			"export default COMPONENT_PLACEHOLDER;"
+		],
+		"description": "Template scaffold for a react component."
 	}
+
 }

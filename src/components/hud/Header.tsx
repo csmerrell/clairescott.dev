@@ -1,10 +1,9 @@
 //react
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 //components
-
-//types
+import Toggle from '../buttons/Toggle';
 
 //styles
 const StyledHeader = styled.div`
@@ -19,6 +18,7 @@ const StyledHeader = styled.div`
     padding: 0.25rem 1rem;
     border-bottom: 1px solid var(--clr-border);
     box-shadow: 0 0 5px 0.5px var(--clr-border);
+
     .brand {
       display: flex;
       flex-flow: row;
@@ -36,23 +36,45 @@ const StyledHeader = styled.div`
       flex-grow: 1;
     }
 
-    .contact {
+    .align-right {
       justify-self: flex-end;
-      a {
+      display: flex;
+      flex-flow: row;
+      align-items: center;
+
+      > div {
+        margin-right: 0.5rem;
+      }
+
+      .mock-toggle {
         margin-right: 1rem;
-        img {
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+
+        .toggle {
           position: relative;
-          top: 3px;
-          height: 2em;
+          top: 1px;
         }
+      }
 
-        .fa-regular {
-          font-size: 2rem;
+      .contact {
+        a {
           margin-right: 0.5rem;
-          color: var(--clr-light-gray);
+          img {
+            position: relative;
+            top: 3px;
+            height: 2em;
+          }
 
-          &:hover {
-            color: var(--clr-white);
+          .fa-regular {
+            font-size: 2rem;
+            margin-right: 0.5rem;
+            color: var(--clr-light-gray);
+
+            &:hover {
+              color: var(--clr-white);
+            }
           }
         }
       }
@@ -63,8 +85,11 @@ const StyledHeader = styled.div`
 //component definition
 const Header: React.FC = () => {
   //state logic
+  const [dataMocked, setDataMocked] = useState(true);
 
-  //slot logic
+  function toggleDataSource() {
+    setDataMocked(!dataMocked);
+  }
 
   //template
   return (
@@ -74,24 +99,39 @@ const Header: React.FC = () => {
         Claire Scott Merrell
       </div>
       <div className="spacer" />
-      <div className="contact">
-        <a href="mailto:claire@csmerrell.com" target="_blank" rel="noreferrer">
-          <span className="mail fa-regular fa-envelope" />
-        </a>
-        <a
-          href="https://linkedin.com/in/csmerrell/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <img src="logo/LI-In-Bug.png" />
-        </a>
-        <a
-          href="https://github.com/csmerrell/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <img src="logo/github-mark-white.svg" />
-        </a>
+      <div className="align-right">
+        <div className="mock-toggle">
+          Data:&nbsp;
+          <Toggle
+            toggled={!dataMocked}
+            label={!dataMocked ? 'Live' : 'Mock'}
+            width="4.75rem"
+            onClick={toggleDataSource}
+          />
+        </div>
+        <div className="contact">
+          <a
+            href="mailto:claire@csmerrell.com"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span className="mail fa-regular fa-envelope" />
+          </a>
+          <a
+            href="https://linkedin.com/in/csmerrell/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img src="logo/LI-In-Bug.png" />
+          </a>
+          <a
+            href="https://github.com/csmerrell/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img src="logo/github-mark-white.svg" />
+          </a>
+        </div>
       </div>
     </StyledHeader>
   );

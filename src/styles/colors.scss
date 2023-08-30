@@ -6,13 +6,15 @@
   //pinks
   --clr-pink: #fa9ecc;
 
-  //grays
+  //blacks/grays
   --clr-light-gray: #ddd;
   --clr-mid-gray: #888;
   --clr-dark-gray: #444;
   --clr-bottom-gray: #242424;
   --clr-bottom-gray-light-5: #282828;
+  --clr-bottom-gray-light-10: #2b2b2b;
   --clr-bottom-gray-dark-5: #202020;
+  --clr-black: #000;
 
   //resolved color variables
   --clr-primary: var(--clr-pink);
@@ -20,6 +22,7 @@
   --clr-border: var(--clr-dark-gray);
   --clr-bg: var(--clr-bottom-gray);
   --clr-bg-light-5: var(--clr-bottom-gray-light-5);
+  --clr-bg-light-10: var(--clr-bottom-gray-light-10);
   --clr-bg-dark-5: var(--clr-bottom-gray-dark-5);
   --clr-font: var(--clr-off-white);
 

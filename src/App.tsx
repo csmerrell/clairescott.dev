@@ -1,15 +1,21 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Hud from './components/hud/Hud';
 
-import AnimatedProgressBar from './components/charts/AnimatedProgressBar';
+import Dashboard from './pages/dashboard/Dashboard';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <Hud>
-      <div slot="main-module">
-        <AnimatedProgressBar label="Test" progress={50} />
-      </div>
-    </Hud>
+    <Router>
+      <Hud>
+        <div slot="main-module">
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+          </Routes>
+        </div>
+      </Hud>
+    </Router>
   );
-}
+};
 
 export default App;
