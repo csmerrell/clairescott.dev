@@ -1,23 +1,23 @@
 import { SchemaMap, isSchemaMap } from '@/model/data/Schema';
 
-export const translateData = (
-  payload: Record<string, unknown> | null,
-  dataSchema: SchemaMap,
-  isMock: boolean
-) => {
+export type ParseParams = {
+  rawData?: Record<string, unknown>;
+  schemata: SchemaMap;
+  isMock?: boolean;
+};
+
+export const parseData = (e: ParseParams) => {
   const result = {} as Record<string, unknown>;
-  if (isMock) {
-    Object.entries(dataSchema).forEach(([key, val]) => {
-      if (isSchemaMap(val)) {
-        result[key] = translateData(null, val, true);
-      } else if (val.mock !== undefined) {
-        result[key] = val.mock;
-      } else if (dataSchema.default !== undefined) {
-        result[key] = val.default;
+  if (e.isMock || e.rawData === undefined) {
+    Object.entries(e.schemata).forEach(([key, schema]) => {
+      if (schema.mock !== undefined) {
+        result[key] = schema.mock;
+      } else if (schema.default !== undefined) {
+        result[key] = schema.default;
       }
     });
   } else {
-    console.log(payload);
+    console.log(e.rawData);
     //to be implemented
   }
 
