@@ -1,6 +1,6 @@
 import { parseData } from '@/data/parser';
 import { SchemaMap } from '@/model/data/Schema';
-import taskEntries from '@/pages/mocks/taskEntries';
+import taskEntries from './mocks/taskEntries';
 import taskEntrySchemata from './schemata/taskEntry';
 
 export const DashboardData: SchemaMap = {
