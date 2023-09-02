@@ -9,7 +9,7 @@ import type { ComponentParams } from '@/model/ReactCustom';
 import { CondensedTask } from '../model/Tasks';
 export type AnimatedProgressBarParams = ComponentParams & {
   task: CondensedTask;
-  recentDates: [Date, Date];
+  recentDates: [number, number];
 };
 
 //styles
@@ -29,23 +29,20 @@ const StyledProgressBar = styled.div`
   }
 
   .bar-outer {
+    --bar-bg-color: var(--clr-light-blue);
+
+    position: relative;
     border: 1px solid var(--clr-border);
     border-radius: 0.25em;
     width: 100%;
     height: 1.5em;
     overflow: hidden;
+    background: var(--bar-bg-color);
     .bar-inner {
+      position: absolute;
+      right: 0;
       height: 100%;
-
-      .defualt {
-        background-color: var(--clr-blue-light-5);
-      }
-      .second {
-        background-color: var(--clr-blue);
-      }
-      .closest {
-        background-color: var(--clr-blue-dark-5);
-      }
+      background-color: var(--clr-bg);
     }
   }
 `;
@@ -57,90 +54,70 @@ const TaskProgressBar: React.FC<AnimatedProgressBarParams> = ({
   className,
 }) => {
   //state logic
-  const innerBars = useRef(null);
+  const innerBar = useRef(null);
+  const outerBar = useRef(null);
   const [animatedProgress, setAnimatedProgress] = useState(0);
-  const [animatedProgress_Default, setAnimatedProgress_Default] = useState(0);
-  const [animatedProgress_Second, setAnimatedProgress_Second] = useState(0);
-  const [animatedProgress_Closest, setAnimatedProgress_Closest] = useState(0);
-  const [currTask, setCurrTask] = useState(
-    {} as { date: Date; progress: number }
-  );
-
-  const [closestDate, secondDate] = recentDates;
-  let progressIdx = 0;
 
   useEffect(() => {
-    if (animatedProgress === task.progress || !innerBars.current) return;
-    if (animatedProgress === task.progressEntries[progressIdx].progress) {
-      progressIdx++;
-      if (progressIdx > task.progressEntries.length - 1) return;
-    }
-    if (!currTask || currTask.date != task.progressEntries[progressIdx].date) {
-      setCurrTask(task.progressEntries[progressIdx]);
-    }
-
-    const incrementDefault = () => {
-      setAnimatedProgress((prev) => {
-        const nextProgress = Math.min(prev + 1, currTask.progress);
-        return nextProgress;
-      });
-      setAnimatedProgress_Default((prev) => {
-        const nextProgress = Math.min(prev + 1, currTask.progress);
-        return nextProgress;
-      });
-    };
-
-    const incrementSecond = () => {
-      setAnimatedProgress((prev) => {
-        const nextProgress = Math.min(prev + 1, currTask.progress);
-        return nextProgress;
-      });
-      setAnimatedProgress_Second((prev) => {
-        const nextProgress = Math.min(
-          prev + 1,
-          currTask.progress - animatedProgress_Default
-        );
-        return nextProgress;
-      });
-    };
-
-    const incrementClosest = () => {
-      setAnimatedProgress((prev) => {
-        const nextProgress = Math.min(prev + 1, currTask.progress);
-        return nextProgress;
-      });
-      setAnimatedProgress_Closest((prev) => {
-        const nextProgress = Math.min(
-          prev + 1,
-          currTask.progress - animatedProgress_Default - animatedProgress_Second
-        );
-        return nextProgress;
-      });
-    };
+    if (animatedProgress === task.progress || !innerBar.current) return;
 
     const timeout = setTimeout(() => {
-      if (currTask.date >= closestDate) {
-        incrementClosest();
-      } else if (secondDate && currTask.date >= secondDate) {
-        incrementSecond();
-      } else {
-        incrementDefault();
-      }
+      setAnimatedProgress((prevAnimatedProgress) => {
+        const nextProgress = Math.min(prevAnimatedProgress + 1, task.progress);
+        if (nextProgress === task.progress) {
+          clearTimeout(timeout); // Clear the timeout when progress reaches its target
+        }
+        return nextProgress;
+      });
     }, 5);
 
-    return () => clearTimeout(timeout);
-  }, [
-    animatedProgress,
-    progressIdx,
-    currTask,
-    task,
-    secondDate,
-    closestDate,
-    animatedProgress_Default,
-    animatedProgress_Second,
-    animatedProgress_Closest,
-  ]);
-  //slot logic
+    return () => clearTimeout(timeout); // Cleanup the timeout on unmount or dependency change
+  }, [task.progress, animatedProgress]);
+
+  //static logic
+  const [closestDate, secondDate] = recentDates;
+  const closestProgress = task.progressEntries.find(
+    (task) => task.date.getTime() === closestDate
+  )?.progress;
+  const secondProgress = task.progressEntries.find(
+    (task) => task.date.getTime() === secondDate
+  )?.progress;
+
+  let defaultProgress = 0;
+  task.progressEntries.forEach((entry) => {
+    if (
+      entry.date.getTime() !== closestDate &&
+      entry.date.getTime() !== secondDate &&
+      entry.progress > defaultProgress
+    ) {
+      defaultProgress = entry.progress;
+    }
+  });
+
+  useEffect(() => {
+    if (!outerBar.current) return;
+    const gradientCutoffs = [];
+    if (closestProgress) {
+      gradientCutoffs.unshift(`var(--clr-blue-dark-5) ${closestProgress}%`);
+      gradientCutoffs.unshift(
+        `var(--clr-blue-dark-5) ${secondProgress ?? defaultProgress ?? 0}%`
+      );
+    }
+    if (secondProgress) {
+      gradientCutoffs.unshift(`var(--clr-blue) ${secondProgress}%`);
+      gradientCutoffs.unshift(`var(--clr-blue) ${defaultProgress ?? 0}%`);
+    }
+    if (defaultProgress) {
+      gradientCutoffs.unshift(`var(--clr-light-blue) ${defaultProgress}%`);
+      gradientCutoffs.unshift(`var(--clr-light-blue) ${0}%`);
+    }
+
+    (outerBar.current as HTMLElement).style.setProperty(
+      '--bar-bg-color',
+      `linear-gradient(to right, ${gradientCutoffs.join(', ')})`
+    );
+  }, [outerBar, closestProgress, secondProgress, defaultProgress]);
+  innerBar.current;
 
   //template
   return (
@@ -150,21 +127,12 @@ const TaskProgressBar: React.FC<AnimatedProgressBarParams> = ({
         <span className="percentage">{animatedProgress}%</span>
       </label>
 
-      <div className="bar-outer">
-        <div ref={innerBars}>
-          <div
-            className="bar-inner default"
-            style={{ width: `${animatedProgress_Default}%` }}
-          />
-          <div
-            className="bar-inner second"
-            style={{ width: `${animatedProgress_Second}%` }}
-          />
-          <div
-            className="bar-inner default"
-            style={{ width: `${animatedProgress_Closest}%` }}
-          />
-        </div>
+      <div ref={outerBar} className="bar-outer">
+        <div
+          ref={innerBar}
+          className="bar-inner"
+          style={{ width: `${100 - animatedProgress}%` }}
+        ></div>
       </div>
     </StyledProgressBar>
   );

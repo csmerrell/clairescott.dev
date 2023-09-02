@@ -65,10 +65,9 @@ const condenseTasks = (tasks: TaskEntry[]) => {
   });
 };
 
-const getRecentDates = (tasks: TaskEntry[]): [Date, Date] => {
-  const sortedDates = tasks.map(task => task.date).sort((date1, date2) => date1 < date2 ? -1 : 1);
-  return Array.from(new Set(sortedDates)).slice(0,2) as [Date,Date];
-
+const getRecentDates = (tasks: TaskEntry[]): [number,number] => {
+  const sortedDates = tasks.map(task => task.date.getTime()).sort((date1, date2) => date2 - date1);
+  return Array.from(new Set(sortedDates)).slice(0,2) as [number,number];
 }
 
 //component definition
