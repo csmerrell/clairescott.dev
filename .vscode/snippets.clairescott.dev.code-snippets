@@ -60,7 +60,7 @@
 			"//components",
 			"",
 			"//types",
-			"import type { ComponentParams, SlotChildElement } from '@/types/ReactCustom';",
+			"import type { ComponentParams, SlotChildElement } from '@/model/ReactCustom';",
 			"",
 			"//styles",
 			"const STYLED_COMPONENT = styled.div``;",

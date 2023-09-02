@@ -5,7 +5,7 @@ import styled from 'styled-components';
 //components
 
 //types
-import type { ComponentParams } from '@/types/ReactCustom';
+import type { ComponentParams } from '@/model/ReactCustom';
 export type AnimatedProgressBarParams = ComponentParams & {
   label: string;
   progress: number; //[0 - 100]
@@ -41,7 +41,7 @@ const StyledProgressBar = styled.div`
 `;
 
 //component definition
-const AnimatedProgressBar: React.FC<AnimatedProgressBarParams> = ({
+const TaskProgressBar: React.FC<AnimatedProgressBarParams> = ({
   label,
   progress,
   className,
@@ -80,4 +80,4 @@ const AnimatedProgressBar: React.FC<AnimatedProgressBarParams> = ({
   );
 };
 
-export default AnimatedProgressBar;
+export default TaskProgressBar;

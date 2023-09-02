@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import CoordinateContainer from '@/components/layout/CoordinateContainer';
 
 //types
-import type { ComponentParams } from '@/types/ReactCustom';
+import type { ComponentParams } from '@/model/ReactCustom';
 
 //styles
 const StyledLeftNav = styled.div`
