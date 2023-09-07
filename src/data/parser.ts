@@ -1,4 +1,4 @@
-import { SchemaMap, isSchemaMap } from '@/model/data/Schema';
+import { SchemaMap } from '@/model/data/Schema';
 
 export type ParseParams = {
   rawData?: Record<string, unknown>;
