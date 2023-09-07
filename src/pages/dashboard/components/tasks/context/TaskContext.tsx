@@ -38,7 +38,7 @@ export const TaskProvider: React.FC<ITaskProviderProps> = ({ children }) => {
     if (secondCanAnimate && secondTasks.length === animatedSecondTasks.length) {
       setTimeout(() => {
         setLatestCanAnimate(true);
-      }, 500);
+      }, 1600);
     }
   };
 

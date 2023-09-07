@@ -19,6 +19,21 @@ type ProgressSegmentParams = ComponentParams & {
 //styles
 const StyledProgressSegment = styled.div`
   &.progress-segment {
+    display: inline-block;
+    height: 100%;
+    background-color: #cce6ff;
+    border-left: 1px solid #b3d9ff;
+    box-sizing: border-box;
+
+    &.second {
+      background-color: #4da6ff;
+      border-left: 1px solid #3399ff;
+    }
+
+    &.latest {
+      background-color: #0066cc;
+      border-left: 1px solid #0059b3;
+    }
   }
 `;
 
@@ -70,7 +85,7 @@ const ProgressSegment: React.FC<ProgressSegmentParams> = ({
   useEffect(() => {
     if (progressEntry.isLatest && !taskContext.latestCanAnimate) return;
     if (progressEntry.isSecond && !taskContext.secondCanAnimate) return;
-    if (animatedSegmentProgress + progressDiff == progressEntry.progress) {
+    if (animatedSegmentProgress + progressDiff >= progressEntry.progress) {
       onAnimationDone(
         progressEntry.key,
         progressEntry.isLatest,
@@ -96,7 +111,13 @@ const ProgressSegment: React.FC<ProgressSegmentParams> = ({
   //template
   return (
     <StyledProgressSegment
-      className={`progress-segment${className ? ' ' + className : ''}`}
+      className={`progress-segment ${
+        progressEntry.isLatest
+          ? 'latest'
+          : progressEntry.isSecond
+          ? 'second'
+          : ''
+      }${className ? ' ' + className : ''}`}
       style={{ width: `${animatedSegmentProgress}%` }}
     />
   );
