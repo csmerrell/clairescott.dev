@@ -1,5 +1,13 @@
 export default [
   {
+    key: 'BAR_ANIM',
+    desc: 'Task Bar Animations',
+    date: new Date(2023, 8, 7),
+    progress: 100,
+    storyPoints: 8,
+    trelloData: [],
+  },
+  {
     key: 'HUDFIX',
     desc: 'Fix FlexHud Overflows',
     date: new Date(2023, 8, 1),
