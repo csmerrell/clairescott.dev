@@ -5,7 +5,10 @@ import styled from 'styled-components';
 //Components
 import Header from './Header';
 import LeftNav from './LeftNav';
-import { ComponentParams, SlotChildElement } from '@/model/ReactCustom';
+import CoordinateContainer from '@/components/layout/CoordinateContainer';
+
+//types
+import type { ComponentParams, SlotChildElement } from '@/model/ReactCustom';
 
 //styles
 const StyledHUD = styled.div`
@@ -15,28 +18,20 @@ const StyledHUD = styled.div`
 
     display: flex;
     flex-flow: column;
-    overflow: hidden;
 
     .hud-body {
       flex-grow: 1;
       display: flex;
       flex-flow: row;
+      overflow: hidden;
 
-      #main-panel {
-        flex-grow: 1;
-        overflow: auto;
-        display: flex;
-        flex-flow: column;
-        align-items: stretch;
-        justify-content: stretch;
-
-        > div {
-          flex-grow: 1;
+      #main-panel,
+      .left-nav {
+        height: 100%;
+        overflow-y: auto;
+        > * {
+          height: 100%;
         }
-      }
-
-      > * {
-        padding-top: 1rem;
       }
     }
   }
@@ -66,10 +61,12 @@ const Hud: React.FC<ComponentParams> = ({ children, className }) => {
     <StyledHUD className={`hud${className ? ' ' + className : ''}`}>
       <Header />
       <div className="hud-body">
-        {leftNavContent.length > 0 ? (
-          <LeftNav className="left-nav">{leftNavContent}</LeftNav>
-        ) : null}
-        <div id="main-panel">{mainModuleContent}</div>
+        <CoordinateContainer className="body-wrapper">
+          {leftNavContent.length > 0 ? (
+            <LeftNav className="left-nav">{leftNavContent}</LeftNav>
+          ) : null}
+          <div id="main-panel">{mainModuleContent}</div>
+        </CoordinateContainer>
       </div>
     </StyledHUD>
   );

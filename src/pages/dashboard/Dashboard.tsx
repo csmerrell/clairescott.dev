@@ -3,22 +3,21 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 //components
-import Tasks from './components/Tasks';
+import Tasks from './components/tasks/Tasks';
 import TrelloPortal from './components/TrelloPortal';
 import Card from '@/components/layout/Card';
 
 //data
 import { parseData } from '@/data/parser';
 import dashboardSchemata from './data/index';
-import { DashboardContext } from './context/DashboardContext';
+import { DashboardContext, DashboardState } from './context/DashboardContext';
 
 //types
 import type { ComponentParams } from '@/model/ReactCustom';
-import { DashboardState } from '../model/Dashboard';
 
 //styles
 const StyledDashboard = styled.div`
-  padding: 0.5rem 1rem;
+  padding: 1.5rem 1rem;
   .progress-item {
     font-size: 1.25rem;
   }
@@ -34,13 +33,12 @@ const Dashboard: React.FC<ComponentParams> = ({ className }) => {
   const [dashboardState, setDashboardState] = useState({} as DashboardState);
 
   useEffect(() => {
-    if (dashboardState) setDashboardState({} as DashboardState);
     const parsed = parseData({
       isMock: true,
       schemata: dashboardSchemata,
     });
     setDashboardState(parsed as DashboardState);
-  }, [dashboardState]);
+  }, []);
 
   //template
   return (

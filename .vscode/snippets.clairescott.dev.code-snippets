@@ -26,7 +26,7 @@
 			"//components",
 			"",
 			"//types",
-			"import type { ComponentParams } from '@/types/ReactCustom';",
+			"import type { ComponentParams } from '@/model/ReactCustom';",
 			"",
 			"//styles",
 			"const STYLED_COMPONENT = styled.div``;",
