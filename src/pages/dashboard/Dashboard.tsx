@@ -39,6 +39,7 @@ const StyledDashboard = styled.div`
     &.dev-time {
       flex-basis: 38%;
       min-width: 24rem;
+      max-width: 34rem;
     }
     &.tasks {
       flex-basis: 62%;
