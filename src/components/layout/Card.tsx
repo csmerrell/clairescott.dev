@@ -3,11 +3,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 //types
-import type { ComponentParams, SlotChildElement } from '@/types/ReactCustom';
+import type { ComponentParams, SlotChildElement } from '@/model/ReactCustom';
 
 //styles
 const StyledCard = styled.div`
   &.card {
+    position: relative;
     padding: 1.5em;
     border-radius: 0.35rem;
     box-shadow: 0 0 2px 1px var(--clr-border);

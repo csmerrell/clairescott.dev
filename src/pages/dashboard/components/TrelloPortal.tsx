@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 //types
-import type { ComponentParams } from '@/types/ReactCustom';
+import type { ComponentParams } from '@/model/ReactCustom';
 
 //styles
 const StyledTrelloPortal = styled.div`

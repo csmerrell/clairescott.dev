@@ -5,7 +5,7 @@ import styled from 'styled-components';
 //components
 
 //types
-import type { ComponentParams, SlotChildElement } from '@/types/ReactCustom';
+import type { ComponentParams, SlotChildElement } from '@/model/ReactCustom';
 
 //styles
 const StyledContainer = styled.div`

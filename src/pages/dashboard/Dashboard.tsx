@@ -1,18 +1,23 @@
 //react
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 //components
-import AnimatedProgressBar from '@/components/dataVisualization/AnimatedProgressBar';
+import Tasks from './components/tasks/Tasks';
+import TrelloPortal from './components/TrelloPortal';
+import Card from '@/components/layout/Card';
+
+//data
+import { parseData } from '@/data/parser';
+import dashboardSchemata from './data/index';
+import { DashboardContext, DashboardState } from './context/DashboardContext';
 
 //types
-import type { ComponentParams } from '@/types/ReactCustom';
-import TrelloPortal from '@/pages/dashboard/components/TrelloPortal';
-import Card from '@/components/layout/Card';
+import type { ComponentParams } from '@/model/ReactCustom';
 
 //styles
 const StyledDashboard = styled.div`
-  padding: 0.5rem 1rem;
+  padding: 1.5rem 1rem;
   .progress-item {
     font-size: 1.25rem;
   }
@@ -25,25 +30,30 @@ const StyledDashboard = styled.div`
 //component definition
 const Dashboard: React.FC<ComponentParams> = ({ className }) => {
   //state logic
+  const [dashboardState, setDashboardState] = useState({} as DashboardState);
 
-  //slot logic
+  useEffect(() => {
+    const parsed = parseData({
+      isMock: true,
+      schemata: dashboardSchemata,
+    });
+    setDashboardState(parsed as DashboardState);
+  }, []);
 
   //template
   return (
-    <StyledDashboard className={className ? ' ' + className : ''}>
-      <Card>
-        <div slot="card-header">Task Completion</div>
-        <AnimatedProgressBar
-          label="Test"
-          progress={100}
-          className="progress-item"
-        />
-      </Card>
-      <Card>
-        <div slot="card-header">Development Pipeline</div>
-        <TrelloPortal />
-      </Card>
-    </StyledDashboard>
+    <DashboardContext.Provider value={dashboardState}>
+      <StyledDashboard className={className ? ' ' + className : ''}>
+        <Card>
+          <div slot="card-header">Task Completion</div>
+          <Tasks />
+        </Card>
+        <Card>
+          <div slot="card-header">Development Pipeline</div>
+          <TrelloPortal />
+        </Card>
+      </StyledDashboard>
+    </DashboardContext.Provider>
   );
 };
 
