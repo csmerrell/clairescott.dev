@@ -134,10 +134,10 @@ const Tasks: React.FC<ComponentParams> = ({ className }) => {
   );
 };
 
-export const TaskWrapper: React.FC = () => {
+export const TaskWrapper: React.FC<ComponentParams> = ({ className }) => {
   return (
     <TaskProvider>
-      <Tasks />
+      <Tasks className={`${className ? ' ' + className : ''}`} />
     </TaskProvider>
   );
 };
