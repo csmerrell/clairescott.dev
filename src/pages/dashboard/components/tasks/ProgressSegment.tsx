@@ -51,10 +51,14 @@ const ProgressSegment: React.FC<ProgressSegmentParams> = ({
   ]);
 
   useEffect(() => {
-    if (progressEntry.isLatest && taskContext.latestCanAnimate) {
-      setProgressDiff(initialProgress.current);
-    } else if (progressEntry.isSecond && taskContext.secondCanAnimate) {
-      setProgressDiff(initialProgress.current);
+    if (taskContext.latestCanAnimate) {
+      if (progressEntry.isLatest) {
+        setProgressDiff(initialProgress.current);
+      }
+    } else if (taskContext.secondCanAnimate) {
+      if (progressEntry.isSecond) {
+        setProgressDiff(initialProgress.current);
+      }
     }
   }, [
     progressEntry,
