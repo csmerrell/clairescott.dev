@@ -3,18 +3,17 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 //components
-import Tasks from './components/Tasks';
+import Tasks from './components/tasks/Tasks';
 import TrelloPortal from './components/TrelloPortal';
 import Card from '@/components/layout/Card';
 
 //data
 import { parseData } from '@/data/parser';
 import dashboardSchemata from './data/index';
-import { DashboardContext } from './context/DashboardContext';
+import { DashboardContext, DashboardState } from './context/DashboardContext';
 
 //types
 import type { ComponentParams } from '@/model/ReactCustom';
-import { DashboardState } from './model/Dashboard';
 
 //styles
 const StyledDashboard = styled.div`

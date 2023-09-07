@@ -1,3 +1,8 @@
 import { createContext } from 'react';
+import { TaskEntry } from '../model/Tasks';
 
-export const DashboardContext = createContext({});
+export type DashboardState = {
+  taskEntries: TaskEntry[];
+};
+
+export const DashboardContext = createContext({} as DashboardState);
