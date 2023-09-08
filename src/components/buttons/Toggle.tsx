@@ -1,11 +1,12 @@
 //react
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 //types
 import type { ComponentParams } from '@/model/ReactCustom';
 export type ToggleParams = ComponentParams & {
   toggled: boolean;
+  disabled?: boolean;
   label?: string;
   width?: string;
   onClick: () => void;
@@ -25,6 +26,10 @@ const StyledToggle = styled.div`
     width: var(--toggle-width);
     height: 1em;
     cursor: pointer;
+
+    &.disabled {
+      cursor: not-allowed;
+    }
 
     .knob {
       position: absolute;
@@ -84,24 +89,22 @@ const StyledToggle = styled.div`
 const Toggle: React.FC<ToggleParams> = ({
   className,
   toggled,
+  disabled,
   label,
   width,
   onClick,
 }) => {
-  //state logic
-
-  //slot logic
-
   //template
   return (
     <StyledToggle
       className={`
-        toggle 
-        ${toggled ? 'toggled' : ''}
+        toggle
+        ${toggled ? ' toggled' : ''}
+        ${disabled ? ' disabled' : ''}
         ${className ? ' ' + className : ''}
       `}
       style={width ? ({ '--toggle-width': width } as React.CSSProperties) : {}}
-      onClick={onClick}
+      onClick={disabled ? () => {} : () => onClick()}
     >
       <span className="knob" />
       {label ? <span className="label">{label}</span> : null}

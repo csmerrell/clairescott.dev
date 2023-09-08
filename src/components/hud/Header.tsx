@@ -1,5 +1,5 @@
 //react
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 
 //components
@@ -47,7 +47,7 @@ const StyledHeader = styled.div`
       }
 
       .mock-toggle {
-        margin-right: 1rem;
+        margin-right: 2rem;
         display: flex;
         flex-flow: row;
         align-items: center;
@@ -79,17 +79,43 @@ const StyledHeader = styled.div`
         }
       }
     }
+    @media screen and (max-width: 800px) {
+      .mock-toggle {
+        display: none !important;
+      }
+    }
+
+    @media screen and (max-width: 565px) {
+      .email {
+        display: none !important;
+      }
+    }
+
+    @media screen and (max-width: 516px) {
+      .github {
+        display: none !important;
+      }
+      .linkedin {
+        margin-right: 0 !important;
+      }
+    }
+
+    @media screen and (max-width: 469px) {
+      .linkedin {
+        display: none !important;
+      }
+    }
   }
 `;
 
 //component definition
 const Header: React.FC = () => {
-  //state logic
+  //state init
   const [dataMocked, setDataMocked] = useState(true);
 
-  function toggleDataSource() {
+  const toggleDataSource = useCallback(() => {
     setDataMocked(!dataMocked);
-  }
+  }, [dataMocked]);
 
   //template
   return (
@@ -107,6 +133,7 @@ const Header: React.FC = () => {
             label={!dataMocked ? 'Live' : 'Mock'}
             width="4.75rem"
             onClick={toggleDataSource}
+            disabled
           />
         </div>
         <div className="contact">
@@ -114,6 +141,7 @@ const Header: React.FC = () => {
             href="mailto:claire@csmerrell.com"
             target="_blank"
             rel="noreferrer"
+            className="email"
           >
             <span className="mail fa-regular fa-envelope" />
           </a>
@@ -121,6 +149,7 @@ const Header: React.FC = () => {
             href="https://linkedin.com/in/csmerrell/"
             target="_blank"
             rel="noreferrer"
+            className="linkedin"
           >
             <img src="logo/LI-In-Bug.png" />
           </a>
@@ -128,6 +157,7 @@ const Header: React.FC = () => {
             href="https://github.com/csmerrell/"
             target="_blank"
             rel="noreferrer"
+            className="github"
           >
             <img src="logo/github-mark-white.svg" />
           </a>

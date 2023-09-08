@@ -38,7 +38,7 @@ const StyledDashboard = styled.div`
 
     &.dev-time {
       flex-basis: 38%;
-      min-width: 24rem;
+      min-width: 22rem;
       max-width: 34rem;
     }
     &.tasks {
@@ -48,6 +48,12 @@ const StyledDashboard = styled.div`
     &.trello {
       flex-basis: 100%;
       min-width: 40rem;
+    }
+  }
+
+  @media screen and (max-width: 1060px) {
+    .card-wrapper.dev-time {
+      max-width: unset;
     }
   }
 
