@@ -2,7 +2,7 @@ export default [
   {
     key: 'MISCFIX',
     desc: 'Miscellaneous Fixes & Adjustments',
-    date: new Date(2023, 8, 7),
+    date: new Date(2023, 8, 8),
     progress: 100,
     storyPoints: 0,
     devHours: 4,
