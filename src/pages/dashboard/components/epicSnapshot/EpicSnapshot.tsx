@@ -1,11 +1,16 @@
 //react
-import React from 'react';
+import React, { useState, useCallback, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
 //components
 
 //types
 import type { ComponentParams } from '@/model/ReactCustom';
+import {
+  DashboardContext,
+  DashboardState,
+} from '../../context/DashboardContext';
+import { condenseTasks } from '../tasks/util/taskCondenser';
 
 //styles
 const StyledDevTime = styled.div`
@@ -25,7 +30,7 @@ const StyledDevTime = styled.div`
 
     .focal-item {
       margin-top: -1.25rem;
-      margin-bottom: 3rem;
+      margin-bottom: 1.5rem;
       padding: 0 2rem;
       font-size: 7em;
       display: flex;
@@ -52,11 +57,12 @@ const StyledDevTime = styled.div`
       flex-wrap: wrap;
       font-size: 1.25em;
 
-      &.boilerplate {
+      &.stack {
         label {
           flex-basis: 100%;
         }
         code {
+          flex-basis: 100%;
           margin-left: 1rem;
           color: var(--clr-pink);
         }
@@ -82,8 +88,29 @@ const StyledDevTime = styled.div`
 //component definition
 const DevTime: React.FC<ComponentParams> = ({ className }) => {
   //state logic
+  const dashboardState = useContext(DashboardContext) as DashboardState;
+  const [currentStoryPoints, setCurrentStoryPoints] = useState(0);
+  const [currentDevHours, setCurrentDevHours] = useState(0);
 
-  //slot logic
+  const getTaskData = useCallback(() => {
+    const tasks = condenseTasks(dashboardState.taskEntries);
+    const [devHours, storyPoints] = tasks.reduce(
+      ([sumDevHours, sumStoryPoints], task): [number, number] => {
+        return [
+          sumDevHours + task.devHours,
+          sumStoryPoints + (task.storyPoints * task.progress) / 100,
+        ];
+      },
+      [0, 0]
+    );
+    setCurrentDevHours(devHours);
+    setCurrentStoryPoints(Math.floor(storyPoints));
+  }, [dashboardState.taskEntries]);
+
+  useEffect(() => {
+    if (!dashboardState.taskEntries) return;
+    getTaskData();
+  }, [dashboardState, getTaskData]);
 
   //template
   return (
@@ -94,7 +121,7 @@ const DevTime: React.FC<ComponentParams> = ({ className }) => {
         <small>(Current Epic)</small>
       </div>
       <div className="focal-item">
-        <div className="hours">46</div>
+        <div className="hours">{currentDevHours}</div>
         <div className="text">
           dev
           <br />
@@ -107,21 +134,20 @@ const DevTime: React.FC<ComponentParams> = ({ className }) => {
       </div>
       <div className="line">
         <label>Story Point Progress:</label>
-        <div>29 / 44*</div>
+        <div>{currentStoryPoints} / 44</div>
       </div>
-      <div className="line boilerplate">
-        <label>Boilerplate:</label>
-        <div>
-          <code>npm create vite@latest --template react</code>
-        </div>
+      <div className="line stack">
+        <label>Stack:</label>
+        <code>Typescript, React, CSS/Styled Components</code>
+        <code>Vite, ESLint, Git, AWS Amplify</code>
       </div>
       <div className="line">
-        <label>New Skills:</label>
+        <label>New Skill(s):</label>
         <ul>
-          <li className="long-text">
-            Try out React's provider/consumer Context API as a complete
-            alternative to Redux.
+          <li>
+            Context provider/consumer API as a complete alternative to Redux.
           </li>
+          <li>Upcoming: Trello & Github OAuth.</li>
         </ul>
       </div>
     </StyledDevTime>
