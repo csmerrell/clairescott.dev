@@ -13,7 +13,7 @@ import {
 import { condenseTasks } from '../tasks/util/taskCondenser';
 
 //styles
-const StyledDevTime = styled.div`
+const StyledEpicSnapshot = styled.div`
   &.dev-time {
     .card-header {
       display: flex;
@@ -86,7 +86,7 @@ const StyledDevTime = styled.div`
 `;
 
 //component definition
-const DevTime: React.FC<ComponentParams> = ({ className }) => {
+const EpicSnapshot: React.FC<ComponentParams> = ({ className }) => {
   //state logic
   const dashboardState = useContext(DashboardContext) as DashboardState;
   const [currentStoryPoints, setCurrentStoryPoints] = useState(0);
@@ -114,7 +114,7 @@ const DevTime: React.FC<ComponentParams> = ({ className }) => {
 
   //template
   return (
-    <StyledDevTime className={`dev-time ${className ? className : ''}`}>
+    <StyledEpicSnapshot className={`dev-time ${className ? className : ''}`}>
       <div className="card-header">
         Deploy MVP
         <br />
@@ -150,8 +150,8 @@ const DevTime: React.FC<ComponentParams> = ({ className }) => {
           <li>Upcoming: Trello & Github OAuth.</li>
         </ul>
       </div>
-    </StyledDevTime>
+    </StyledEpicSnapshot>
   );
 };
 
-export default DevTime;
+export default EpicSnapshot;
