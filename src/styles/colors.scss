@@ -5,6 +5,10 @@
 
   //pinks
   --clr-pink: #fa9ecc;
+  --clr-bold-pink: #ff6699;
+  
+  //golds
+  --clr-gold: #ff9933;
 
   //blues
   --clr-blue: #4d79ff;
@@ -28,7 +32,7 @@
   --clr-black: #000;
 
   //resolved color variables
-  --clr-primary: var(--clr-pink);
+  --clr-primary: var(--clr-bold-pink);
   --clr-secondary: var(--clr-mid-gray);
   --clr-border: var(--clr-dark-gray);
   --clr-bg: var(--clr-bottom-gray);

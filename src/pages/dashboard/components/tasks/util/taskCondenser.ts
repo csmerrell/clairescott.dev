@@ -2,7 +2,7 @@ import { CondensedTask, TaskEntry, TaskRecencyMap } from '../../../model/Tasks';
 
 export const condenseTasks = (
   tasks: TaskEntry[],
-  recencyMap: TaskRecencyMap
+  recencyMap?: TaskRecencyMap
 ) => {
   const result: Record<string, CondensedTask> = {};
   tasks.forEach((task) => {
@@ -13,8 +13,8 @@ export const condenseTasks = (
           {
             key: task.key,
             date: task.date,
-            isLatest: task.date.getTime() === recencyMap.latest,
-            isSecond: task.date.getTime() === recencyMap.second,
+            isLatest: task.date.getTime() === recencyMap?.latest,
+            isSecond: task.date.getTime() === recencyMap?.second,
             progress: task.progress,
             trelloData: task.trelloData,
           },
@@ -25,6 +25,7 @@ export const condenseTasks = (
         result[task.key].progress,
         task.progress
       );
+      result[task.key].devHours += task.devHours;
 
       const duplicateDefaultIdx = hasDuplicateDefault(task, recencyMap, result);
       if (duplicateDefaultIdx >= 0) {
@@ -33,8 +34,8 @@ export const condenseTasks = (
         result[task.key].progressEntries.push({
           key: task.key,
           date: task.date,
-          isLatest: task.date.getTime() === recencyMap.latest,
-          isSecond: task.date.getTime() === recencyMap.second,
+          isLatest: task.date.getTime() === recencyMap?.latest,
+          isSecond: task.date.getTime() === recencyMap?.second,
           progress: task.progress,
           trelloData: task.trelloData,
         });
@@ -56,12 +57,12 @@ export const condenseTasks = (
 
 const hasDuplicateDefault = (
   task: TaskEntry,
-  recencyMap: TaskRecencyMap,
+  recencyMap: TaskRecencyMap | undefined,
   taskMap: Record<string, CondensedTask>
 ): number => {
   const isDefault = !(
-    task.date.getTime() === recencyMap.latest ||
-    task.date.getTime() === recencyMap.second
+    task.date.getTime() === recencyMap?.latest ||
+    task.date.getTime() === recencyMap?.second
   );
   if (isDefault) {
     return taskMap[task.key].progressEntries.findIndex((entry) => {

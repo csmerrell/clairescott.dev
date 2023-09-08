@@ -1,10 +1,20 @@
 export default [
   {
-    key: 'BAR_ANIM',
-    desc: 'Task Bar Animations',
+    key: 'SNAP',
+    desc: 'Epic Snapshot',
     date: new Date(2023, 8, 7),
+    progress: 50,
+    storyPoints: 3,
+    devHours: 2,
+    trelloData: [],
+  },
+  {
+    key: 'BARFIX',
+    desc: 'Task Bar Refactor & Popoff',
+    date: new Date(2023, 8, 6),
     progress: 100,
-    storyPoints: 8,
+    storyPoints: 5,
+    devHours: 8,
     trelloData: [],
   },
   {
@@ -12,7 +22,8 @@ export default [
     desc: 'Fix FlexHud Overflows',
     date: new Date(2023, 8, 1),
     progress: 100,
-    storyPoints: 3,
+    storyPoints: 2,
+    devHours: 3,
     trelloData: [],
   },
   {
@@ -21,6 +32,7 @@ export default [
     date: new Date(2023, 8, 1),
     progress: 100,
     storyPoints: 3,
+    devHours: 5,
     trelloData: [],
   },
   {
@@ -29,14 +41,7 @@ export default [
     date: new Date(2023, 7, 31),
     progress: 100,
     storyPoints: 5,
-    trelloData: [],
-  },
-  {
-    key: 'BOIL',
-    desc: 'Boilerplate',
-    date: new Date(2023, 7, 30),
-    progress: 100,
-    storyPoints: 8,
+    devHours: 5,
     trelloData: [],
   },
   {
@@ -45,6 +50,16 @@ export default [
     date: new Date(2023, 7, 30),
     progress: 100,
     storyPoints: 2,
+    devHours: 2,
+    trelloData: [],
+  },
+  {
+    key: 'BOIL',
+    desc: 'Boilerplate',
+    date: new Date(2023, 7, 30),
+    progress: 100,
+    storyPoints: 8,
+    devHours: 4,
     trelloData: [],
   },
   {
@@ -53,6 +68,7 @@ export default [
     date: new Date(2023, 7, 30),
     progress: 100,
     storyPoints: 3,
+    devHours: 4,
     trelloData: [],
   },
   {
@@ -61,6 +77,7 @@ export default [
     date: new Date(2023, 7, 30),
     progress: 20,
     storyPoints: 5,
+    devHours: 3,
     trelloData: [],
   },
   {
@@ -69,6 +86,7 @@ export default [
     date: new Date(2023, 7, 29),
     progress: 40,
     storyPoints: 5,
+    devHours: 2,
     trelloData: [],
   },
   {
@@ -77,6 +95,7 @@ export default [
     date: new Date(2023, 7, 28),
     progress: 100,
     storyPoints: 3,
+    devHours: 4,
     trelloData: [],
   },
   {
@@ -85,6 +104,7 @@ export default [
     date: new Date(2023, 7, 27),
     progress: 100,
     storyPoints: 2,
+    devHours: 2,
     TrelloData: [],
   },
   {
@@ -93,6 +113,7 @@ export default [
     date: new Date(2023, 7, 24),
     progress: 65,
     storyPoints: 8,
+    devHours: 8,
     trelloData: [],
   },
 ];

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 //components
+import EpicSnapshot from './components/epicSnapshot/EpicSnapshot';
 import Tasks from './components/tasks/Tasks';
 import TrelloPortal from './components/TrelloPortal';
 import Card from '@/components/layout/Card';
@@ -18,12 +19,47 @@ import type { ComponentParams } from '@/model/ReactCustom';
 //styles
 const StyledDashboard = styled.div`
   padding: 1.5rem 1rem;
-  .progress-item {
-    font-size: 1.25rem;
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  flex-wrap: wrap;
+
+  .card-wrapper {
+    flex-grow: 1;
+    box-sizing: border-box;
+    padding: 1rem 0.5rem;
+    padding-top: 0;
+
+    display: flex;
+    .card {
+      flex-grow: 1;
+    }
+
+    &.dev-time {
+      flex-basis: 38%;
+      min-width: 24rem;
+      max-width: 34rem;
+    }
+    &.tasks {
+      flex-basis: 62%;
+      min-width: 20rem;
+    }
+    &.trello {
+      flex-basis: 100%;
+      min-width: 40rem;
+    }
   }
-  .card {
-    margin: 1rem 0.5rem;
-    margin-top: 0;
+
+  @media screen and (max-width: 720px) {
+    .card-wrapper {
+      &.dev-time,
+      &.tasks,
+      &.trello {
+        min-width: unset;
+        flex-basis: 100%;
+      }
+    }
   }
 `;
 
@@ -44,14 +80,23 @@ const Dashboard: React.FC<ComponentParams> = ({ className }) => {
   return (
     <DashboardContext.Provider value={dashboardState}>
       <StyledDashboard className={className ? ' ' + className : ''}>
-        <Card>
-          <div slot="card-header">Task Completion</div>
-          <Tasks />
-        </Card>
-        <Card>
-          <div slot="card-header">Development Pipeline</div>
-          <TrelloPortal />
-        </Card>
+        <div className="card-wrapper dev-time">
+          <Card>
+            <EpicSnapshot />
+          </Card>
+        </div>
+        <div className="card-wrapper tasks">
+          <Card>
+            <div slot="card-header">Task Completion</div>
+            <Tasks />
+          </Card>
+        </div>
+        <div className="card-wrapper trello">
+          <Card>
+            <div slot="card-header">Development Pipeline</div>
+            <TrelloPortal />
+          </Card>
+        </div>
       </StyledDashboard>
     </DashboardContext.Provider>
   );

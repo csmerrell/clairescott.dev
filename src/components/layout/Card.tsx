@@ -14,8 +14,9 @@ const StyledCard = styled.div`
     box-shadow: 0 0 2px 1px var(--clr-border);
 
     .card-header {
-      font-size: 1.5em;
-      margin-top: -0.5em;
+      font-size: 2em;
+      line-height: 0.9em;
+      margin-top: -0.25em;
       margin-bottom: 1em;
     }
   }
@@ -43,7 +44,7 @@ const Card: React.FC<ComponentParams> = ({ children, className }) => {
   //template
   return (
     <StyledCard className={`card${className ? ' ' + className : ''}`}>
-      <div className="card-header">{header}</div>
+      {header.length > 0 ? <div className="card-header">{header}</div> : null}
       {cardContent}
     </StyledCard>
   );

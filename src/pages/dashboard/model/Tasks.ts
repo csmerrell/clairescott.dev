@@ -4,6 +4,7 @@ export type TaskEntry = {
   key: string;
   progress: number;
   storyPoints: number;
+  devHours: number;
   trelloData: TrelloItem[];
 };
 
