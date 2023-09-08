@@ -15,6 +15,13 @@ import { condenseTasks } from '../tasks/util/taskCondenser';
 //styles
 const StyledEpicSnapshot = styled.div`
   &.dev-time {
+    .contents {
+      position: relative;
+      max-width: 28rem;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
     .card-header {
       display: flex;
       flex-flow: row;
@@ -32,7 +39,7 @@ const StyledEpicSnapshot = styled.div`
       margin-top: -1.25rem;
       margin-bottom: 1.5rem;
       padding: 0 2rem;
-      font-size: 7em;
+      font-size: 6em;
       display: flex;
       flex-flow: row;
       justify-content: flex-end;
@@ -91,9 +98,21 @@ const EpicSnapshot: React.FC<ComponentParams> = ({ className }) => {
   const dashboardState = useContext(DashboardContext) as DashboardState;
   const [currentStoryPoints, setCurrentStoryPoints] = useState(0);
   const [currentDevHours, setCurrentDevHours] = useState(0);
+  const [oldestTask, setOldestTask] = useState<Date | null>(null);
+  const [newestTask, setNewestTask] = useState<Date | null>(null);
 
   const getTaskData = useCallback(() => {
     const tasks = condenseTasks(dashboardState.taskEntries);
+    setOldestTask(
+      tasks.reduce((date, task): Date => {
+        return task.date.getTime() < date.getTime() ? task.date : date;
+      }, new Date())
+    );
+    setNewestTask(
+      tasks.reduce((date, task): Date => {
+        return task.date.getTime() > date.getTime() ? task.date : date;
+      }, new Date(0))
+    );
     const [devHours, storyPoints] = tasks.reduce(
       ([sumDevHours, sumStoryPoints], task): [number, number] => {
         return [
@@ -120,35 +139,40 @@ const EpicSnapshot: React.FC<ComponentParams> = ({ className }) => {
         <br />
         <small>(Current Epic)</small>
       </div>
-      <div className="focal-item">
-        <div className="hours">{currentDevHours}</div>
-        <div className="text">
-          dev
-          <br />
-          hours
+      <div className="contents">
+        <div className="focal-item">
+          <div className="hours">{currentDevHours}</div>
+          <div className="text">
+            dev
+            <br />
+            hours
+          </div>
         </div>
-      </div>
-      <div className="line">
-        <label>Start date:</label>
-        <div>{new Date(2023, 7, 24).toDateString()}</div>
-      </div>
-      <div className="line">
-        <label>Story Point Progress:</label>
-        <div>{currentStoryPoints} / 44</div>
-      </div>
-      <div className="line stack">
-        <label>Stack:</label>
-        <code>Typescript, React, CSS/Styled Components</code>
-        <code>Vite, ESLint, Git, AWS Amplify</code>
-      </div>
-      <div className="line">
-        <label>New Skill(s):</label>
-        <ul>
-          <li>
-            Context provider/consumer API as a complete alternative to Redux.
-          </li>
-          <li>Upcoming: Trello & Github OAuth.</li>
-        </ul>
+        <div className="line">
+          <label>Start date:</label>
+          <div>{oldestTask?.toDateString()}</div>
+        </div>
+        <div className="line">
+          <label>Last update:</label>
+          <div>{newestTask?.toDateString()}</div>
+        </div>
+        <div className="line">
+          <label>Story Point Progress:</label>
+          <div>{currentStoryPoints} / 48</div>
+        </div>
+        <div className="line stack">
+          <label>Stack:</label>
+          <code>Typescript, React, CSS/Styled Components</code>
+          <code>Vite, ESLint, Git, AWS Amplify</code>
+        </div>
+        <div className="line">
+          <label>New Skill(s):</label>
+          <ul>
+            <li>
+              Context provider/consumer API as a complete alternative to Redux.
+            </li>
+          </ul>
+        </div>
       </div>
     </StyledEpicSnapshot>
   );

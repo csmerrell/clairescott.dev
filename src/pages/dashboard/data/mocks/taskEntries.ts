@@ -1,5 +1,14 @@
 export default [
   {
+    key: 'MISCFIX',
+    desc: 'Miscellaneous Fixes & Adjustments',
+    date: new Date(2023, 8, 7),
+    progress: 100,
+    storyPoints: 0,
+    devHours: 4,
+    trelloData: [],
+  },
+  {
     key: 'SNAP',
     desc: 'Epic Snapshot',
     date: new Date(2023, 8, 7),
