@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 //components
-import DevTime from './components/devTime/DevTime';
+import EpicSnapshot from './components/epicSnapshot/EpicSnapshot';
 import Tasks from './components/tasks/Tasks';
 import TrelloPortal from './components/TrelloPortal';
 import Card from '@/components/layout/Card';
@@ -82,7 +82,7 @@ const Dashboard: React.FC<ComponentParams> = ({ className }) => {
       <StyledDashboard className={className ? ' ' + className : ''}>
         <div className="card-wrapper dev-time">
           <Card>
-            <DevTime />
+            <EpicSnapshot />
           </Card>
         </div>
         <div className="card-wrapper tasks">
