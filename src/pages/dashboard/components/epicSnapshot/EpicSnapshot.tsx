@@ -1,5 +1,5 @@
 //react
-import React, { useState, useCallback, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
 //components
@@ -10,7 +10,8 @@ import {
   DashboardContext,
   DashboardState,
 } from '../../context/DashboardContext';
-import { condenseTasks } from '../tasks/util/taskListParsing';
+import useTaskContext from '../tasks/context/useTaskContext';
+import { TaskProvider } from '../tasks/context/TaskContext';
 
 //styles
 const StyledEpicSnapshot = styled.div`
@@ -98,22 +99,16 @@ const EpicSnapshot: React.FC<ComponentParams> = ({ className }) => {
   const dashboardState = useContext(DashboardContext) as DashboardState;
   const [currentStoryPoints, setCurrentStoryPoints] = useState(0);
   const [currentDevHours, setCurrentDevHours] = useState(0);
-  const [oldestTask, setOldestTask] = useState<Date | null>(null);
-  const [newestTask, setNewestTask] = useState<Date | null>(null);
+  const taskContext = useTaskContext();
 
-  const getTaskData = useCallback(() => {
-    const tasks = condenseTasks(dashboardState.taskEntries);
-    setOldestTask(
-      tasks.reduce((date, task): Date => {
-        return task.date.getTime() < date.getTime() ? task.date : date;
-      }, new Date())
-    );
-    setNewestTask(
-      tasks.reduce((date, task): Date => {
-        return task.date.getTime() > date.getTime() ? task.date : date;
-      }, new Date(0))
-    );
-    const [devHours, storyPoints] = tasks.reduce(
+  useEffect(() => {
+    if (!dashboardState.taskEntries || taskContext.tasks.length > 0) return;
+    taskContext.initTasks(dashboardState.taskEntries);
+  }, [dashboardState, taskContext]);
+
+  useEffect(() => {
+    if (taskContext.tasks.length == 0) return;
+    const [devHours, storyPoints] = taskContext.tasks.reduce(
       ([sumDevHours, sumStoryPoints], task): [number, number] => {
         return [
           sumDevHours + task.devHours,
@@ -124,12 +119,7 @@ const EpicSnapshot: React.FC<ComponentParams> = ({ className }) => {
     );
     setCurrentDevHours(devHours);
     setCurrentStoryPoints(Math.floor(storyPoints));
-  }, [dashboardState.taskEntries]);
-
-  useEffect(() => {
-    if (!dashboardState.taskEntries) return;
-    getTaskData();
-  }, [dashboardState, getTaskData]);
+  }, [taskContext.tasks]);
 
   //template
   return (
@@ -150,11 +140,17 @@ const EpicSnapshot: React.FC<ComponentParams> = ({ className }) => {
         </div>
         <div className="line">
           <label>Start date:</label>
-          <div>{oldestTask?.toDateString()}</div>
+          <div>
+            {taskContext.recencyMap
+              ? new Date(taskContext.recencyMap.oldest).toDateString()
+              : ''}
+          </div>
         </div>
         <div className="line">
           <label>Last update:</label>
-          <div>{newestTask?.toDateString()}</div>
+          {taskContext.recencyMap
+            ? new Date(taskContext.recencyMap.latest).toDateString()
+            : ''}
         </div>
         <div className="line">
           <label>Story Point Progress:</label>
@@ -178,4 +174,12 @@ const EpicSnapshot: React.FC<ComponentParams> = ({ className }) => {
   );
 };
 
-export default EpicSnapshot;
+export const TaskWrapper: React.FC<ComponentParams> = ({ className }) => {
+  return (
+    <TaskProvider>
+      <EpicSnapshot className={`${className ? ' ' + className : ''}`} />
+    </TaskProvider>
+  );
+};
+
+export default TaskWrapper;
