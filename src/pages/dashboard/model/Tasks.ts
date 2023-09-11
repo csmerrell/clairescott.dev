@@ -29,6 +29,8 @@ export type TaskProgressEntry = {
 export type TaskRecencyMap = {
   latest: number;
   second?: number;
+  default?: number;
+  oldest: number;
 };
 
 export type TrelloItem = unknown;

@@ -93,7 +93,6 @@ const Dashboard: React.FC<ComponentParams> = ({ className }) => {
         </div>
         <div className="card-wrapper tasks">
           <Card>
-            <div slot="card-header">Task Completion</div>
             <Tasks />
           </Card>
         </div>
