@@ -1,7 +1,7 @@
 export default [
   {
     key: 'TASKLEGEND',
-    desc: 'Miscellaneous Fixes & Adjustments',
+    desc: 'Task Legend',
     date: new Date(2023, 8, 10),
     progress: 100,
     storyPoints: 1,
