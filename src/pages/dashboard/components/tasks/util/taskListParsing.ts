@@ -98,6 +98,6 @@ export const getRecencyMap = (tasks: TaskEntry[]) => {
     latest: Array.from(uniqueDates)[0],
     second: uniqueDates.size > 1 ? Array.from(uniqueDates)[1] : undefined,
     default: uniqueDates.size > 2 ? Array.from(uniqueDates)[2] : undefined,
-    oldest: Array.from(uniqueDates).pop(),
+    oldest: Array.from(uniqueDates).pop() as number,
   };
 };
