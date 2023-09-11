@@ -54,7 +54,7 @@ const StyledProgressBar = styled.div`
 `;
 
 //component definition
-const TaskProgressBar: React.FC<AnimatedProgressBarParams> = ({
+const ProgressBar: React.FC<AnimatedProgressBarParams> = ({
   task,
   className,
   onExpanded,
@@ -183,4 +183,4 @@ const TaskProgressBar: React.FC<AnimatedProgressBarParams> = ({
   );
 };
 
-export default TaskProgressBar;
+export default ProgressBar;
