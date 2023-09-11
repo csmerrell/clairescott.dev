@@ -10,7 +10,7 @@ import {
   DashboardContext,
   DashboardState,
 } from '../../context/DashboardContext';
-import { condenseTasks } from '../tasks/util/taskCondenser';
+import { condenseTasks } from '../tasks/util/taskListParsing';
 
 //styles
 const StyledEpicSnapshot = styled.div`

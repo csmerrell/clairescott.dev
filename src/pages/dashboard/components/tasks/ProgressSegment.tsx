@@ -21,18 +21,18 @@ const StyledProgressSegment = styled.div`
   &.progress-segment {
     display: inline-block;
     height: 100%;
-    background-color: #cce6ff;
-    border-left: 1px solid #b3d9ff;
+    background-color: var(--clr-default-task);
+    border-left: 1px solid var(--clr-default-task-border);
     box-sizing: border-box;
 
     &.second {
-      background-color: #4da6ff;
-      border-left: 1px solid #3399ff;
+      background-color: var(--clr-second-task);
+      border-left: 1px solid var(--clr-second-task-border);
     }
 
     &.latest {
-      background-color: #0066cc;
-      border-left: 1px solid #0059b3;
+      background-color: var(--clr-latest-task);
+      border-left: 1px solid var(--clr-latest-task-border);
     }
   }
 `;

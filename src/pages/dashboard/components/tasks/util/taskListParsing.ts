@@ -88,3 +88,16 @@ const getMergedTask = (
   };
   return result;
 };
+
+export const getRecencyMap = (tasks: TaskEntry[]) => {
+  const sortedDates = tasks
+    .map((task) => task.date.getTime())
+    .sort((task1, task2) => task2 - task1);
+  const uniqueDates = new Set(sortedDates);
+  return {
+    latest: Array.from(uniqueDates)[0],
+    second: uniqueDates.size > 1 ? Array.from(uniqueDates)[1] : undefined,
+    default: uniqueDates.size > 2 ? Array.from(uniqueDates)[2] : undefined,
+    oldest: Array.from(uniqueDates).pop(),
+  };
+};
