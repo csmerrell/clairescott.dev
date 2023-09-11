@@ -56,6 +56,18 @@ const formatDate = (date: Date): string => {
   ).slice(-2)}`;
 };
 
+const isToday = (date: Date): boolean => {
+  return date.toDateString() === new Date().toDateString();
+};
+
+const isYesterday = (date: Date): boolean => {
+  const DAY_MILLISECONDS = 86400000;
+  return (
+    date.toDateString() ===
+    new Date(Date.now() - DAY_MILLISECONDS).toDateString()
+  );
+};
+
 //component definition
 const Legend: React.FC<ComponentParams> = ({ className }) => {
   //state logic
@@ -77,15 +89,19 @@ const Legend: React.FC<ComponentParams> = ({ className }) => {
     if (!(taskContext.secondCanAnimate && taskContext.recencyMap?.second)) {
       return;
     }
-    setSecondDisplay(
-      formatDate(new Date(taskContext.recencyMap!.second as number))
-    );
+    const date = new Date(taskContext.recencyMap!.second as number);
+    setSecondDisplay(isYesterday(date) ? 'Yesterday' : formatDate(date));
   }, [taskContext.secondCanAnimate, taskContext.recencyMap]);
 
   useEffect(() => {
     if (!taskContext.latestCanAnimate) return;
+    const date = new Date(taskContext.recencyMap!.latest as number);
     setLatestDisplay(
-      formatDate(new Date(taskContext.recencyMap!.latest as number))
+      isToday(date)
+        ? 'Today'
+        : isYesterday(date)
+        ? 'Yesterday'
+        : formatDate(date)
     );
   }, [taskContext.latestCanAnimate, taskContext.recencyMap]);
 
