@@ -9,7 +9,7 @@ import React, {
 import styled from 'styled-components';
 
 //components
-import TaskProgressBar from './TaskProgressBar';
+import ProgressBar from './ProgressBar';
 
 //data
 import { TaskProvider } from './context/TaskContext';
@@ -17,44 +17,51 @@ import {
   DashboardContext,
   DashboardState,
 } from '@/pages/dashboard/context/DashboardContext';
-import { condenseTasks } from './util/taskCondenser';
 
 //types
 import type { ComponentParams } from '@/model/ReactCustom';
-import type { TaskEntry, TaskRecencyMap } from '@/pages/dashboard/model/Tasks';
 import useTaskContext from './context/useTaskContext';
+import Legend from './Legend';
 
 //styles
 const StyledTasks = styled.div`
+  --clr-default-task: var(--clr-pale-blue);
+  --clr-default-task-border: var(--clr-pale-blue-dark-5);
+  --clr-second-task: var(--clr-light-blue);
+  --clr-second-task-border: var(--clr-light-blue-dark-5);
+  --clr-latest-task: var(--clr-blue);
+  --clr-latest-task-border: var(--clr-blue-dark-5);
+
+  .header-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
   .task-list {
     .task {
       width: 100%;
     }
   }
-  .see-more {
+
+  .see-more-wrapper {
     display: flex;
     justify-content: flex-end;
     padding-top: 1rem;
-    color: var(--clr-blue);
-    text-decoration: underline;
-    cursor: pointer;
-    &:hover {
-      color: var(--clr-blue-light-5);
+    .see-more {
+      color: var(--clr-blue);
+      text-decoration: underline;
+      cursor: pointer;
+
+      &.disabled {
+        cursor: not-allowed;
+      }
+
+      &:not(.disabled):hover {
+        color: var(--clr-blue-light-5);
+      }
     }
   }
 `;
-
-//methods
-const getRecencyMap = (tasks: TaskEntry[]): TaskRecencyMap => {
-  const sortedDates = tasks
-    .map((task) => task.date.getTime())
-    .sort((task1, task2) => task2 - task1);
-  const uniqueDates = new Set(sortedDates);
-  return {
-    latest: Array.from(uniqueDates)[0],
-    second: uniqueDates.size > 1 ? Array.from(uniqueDates)[1] : undefined,
-  };
-};
 
 //component definition
 const Tasks: React.FC<ComponentParams> = ({ className }) => {
@@ -71,12 +78,15 @@ const Tasks: React.FC<ComponentParams> = ({ className }) => {
     setFixedHeight(null);
   }, []);
 
-  const updateTasks = useCallback(() => {
+  useEffect(() => {
+    if (!dashboardState.taskEntries || taskContext.tasks.length > 0) return;
+    taskContext.initTasks(dashboardState.taskEntries);
+  }, [dashboardState, taskContext]);
+
+  useEffect(() => {
     if (!el.current) return;
-    const recencyMap = getRecencyMap(dashboardState.taskEntries);
-    const tasks = condenseTasks(dashboardState.taskEntries, recencyMap);
     setFixedHeight((el.current as HTMLElement).scrollHeight);
-    const newTaskEls = tasks
+    const newTaskEls = taskContext.tasks
       .filter((task) => {
         const hasDefaultTasks = task.progressEntries.some(
           (e) => !(e.isLatest || e.isSecond)
@@ -89,7 +99,7 @@ const Tasks: React.FC<ComponentParams> = ({ className }) => {
           : true;
       })
       .map((task) => (
-        <TaskProgressBar
+        <ProgressBar
           key={`${task.key}`}
           className="task"
           task={task}
@@ -99,20 +109,19 @@ const Tasks: React.FC<ComponentParams> = ({ className }) => {
 
     setTaskEls(newTaskEls);
   }, [
-    dashboardState,
-    taskContext.secondCanAnimate,
-    taskContext.latestCanAnimate,
     onExpanded,
+    taskContext.latestCanAnimate,
+    taskContext.secondCanAnimate,
+    taskContext.tasks,
   ]);
-
-  useEffect(() => {
-    if (!dashboardState.taskEntries) return;
-    updateTasks();
-  }, [dashboardState, updateTasks]);
 
   //template
   return (
     <StyledTasks className={`${className ? ' ' + className : ''}`}>
+      <div className="header-wrapper">
+        <div className="card-header">Task Progress:</div>
+        <Legend />
+      </div>
       <div
         ref={el}
         className="task-list"
@@ -121,13 +130,18 @@ const Tasks: React.FC<ComponentParams> = ({ className }) => {
         {allVisible ? taskEls : taskEls.slice(0, 6)}
       </div>
       {taskEls.length > 6 ? (
-        <div
-          className="see-more"
-          onClick={() => {
-            setAllVisible(!allVisible);
-          }}
-        >
-          {allVisible ? 'See Less' : 'See More'}
+        <div className="see-more-wrapper">
+          <div
+            className={`see-more ${
+              !taskContext.animationsDone ? 'disabled' : ''
+            }`}
+            onClick={() => {
+              if (!taskContext.animationsDone) return;
+              setAllVisible(!allVisible);
+            }}
+          >
+            {allVisible ? 'See Less' : 'See More'}
+          </div>
         </div>
       ) : null}
     </StyledTasks>

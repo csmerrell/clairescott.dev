@@ -1,5 +1,14 @@
 export default [
   {
+    key: 'TASKLEGEND',
+    desc: 'Task Legend',
+    date: new Date(2023, 8, 10),
+    progress: 100,
+    storyPoints: 1,
+    devHours: 2,
+    trelloData: [],
+  },
+  {
     key: 'MISCFIX',
     desc: 'Miscellaneous Fixes & Adjustments',
     date: new Date(2023, 8, 8),
